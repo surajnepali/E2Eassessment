@@ -8,7 +8,10 @@ class RegisterPage{
         this.nameInput = "input[data-testid='register-name']",
         this.passwordInput = "input[data-testid='register-password']",
         this.confirmPasswordInput = "input[data-testid='register-confirm-password']",
-        this.registerSubmitButton = "button[data-testid='register-submit']"
+        this.registerSubmitButton = "button[data-testid='register-submit']",
+        this.validationMessage = "div.invalid-feedback",
+        this.registrationSuccessMessage = "div.alert.alert-success b",
+        this.emailAlreadyExistsMessage = "[data-testid='alert-message']"
     }
 
     getPageTitle(pageTitle){
@@ -33,6 +36,18 @@ class RegisterPage{
 
     getRegisterSubmitButton(){
         return cy.get(this.registerSubmitButton).should('be.visible');
+    }
+
+    getValidationMessage(){
+        return cy.get(this.validationMessage).should('be.visible');
+    }
+
+    getRegistrationSuccessMessage(){
+        return cy.get(this.registrationSuccessMessage).should('be.visible');
+    }
+
+    getEmailAlreadyExistsMessage(){
+        return cy.get(this.emailAlreadyExistsMessage).should('be.visible');
     }
 
     register(email, name, password, confirmPassword){
