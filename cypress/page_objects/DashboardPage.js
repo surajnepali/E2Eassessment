@@ -1,16 +1,21 @@
 /// <reference types="cypress" />
 
-class Dashboard{
+class DashboardPage{
 
     constructor(){
         this.addNoteButton = "button[data-testid='add-new-note']",
         this.addNoteContainer = "div.modal-content",
+        this.crossIcon = "button.btn-close.me-2",
         this.noteCategoryDropdown = "select[name='category']",
         this.checkboxInput = "input[type='checkbox']",
         this.titleInput = "input#title",
         this.descriptionInput = "textarea#description",
         this.createButton = "button[data-testid='note-submit']",
-        this.cancelButton = "button[data-testid='note-cancel']"
+        this.cancelButton = "button[data-testid='note-cancel']",
+        this.validationMessage = "div.invalid-feedback",
+        this.notesList = "div[data-testid='notes-list']",
+        this.noteCard = "div[data-testid='note-card']",
+        this.noteCardTitle = "div[data-testid='note-card-title']"
     }
 
     getAddNoteButton(){
@@ -19,6 +24,10 @@ class Dashboard{
 
     getAddNoteContainer(){
         return cy.get(this.addNoteContainer).should('be.visible');
+    }
+
+    getCrossIcon(){
+        return cy.get(this.crossIcon).should('be.visible');
     }
 
     getNoteCategoryDropdown(){
@@ -45,17 +54,40 @@ class Dashboard{
         return cy.get(this.cancelButton).should('be.visible');
     }
 
-    addNote(){
-        this.getAddNoteButton().click();
-        this.getAddNoteContainer().should('be.visible');
-        this.getNoteCategoryDropdown().select('Work');
-        this.getCheckboxInput().check();
-        this.getTitleInput().type('My new note');
-        this.getDescriptionInput().type('My new note description');
-        this.getCreateButton().click();
-        this.getCancelButton().click();
+    getValidationMessage(){
+        return cy.get(this.validationMessage).should('be.visible');
+    }
+
+    getNotesList(){
+        return cy.get(this.notesList).should('be.visible');
+    }
+
+    getNoteCard(){
+        return cy.get(this.noteCard).should('be.visible');
+    }
+
+    addNote(category, checkbox, title, description){
+        this.getAddNoteContainer().should('be.visible').within(() => {
+            this.getNoteCategoryDropdown().select(category);
+            cy.log("Value of checkbox: " + checkbox);
+            if(checkbox){
+                this.getCheckboxInput().check();
+            }
+            this.getTitleInput().type(title);
+            this.getDescriptionInput().type(description);
+        });
+    }
+
+    verifyFirstNote(title, checkbox){
+        cy.wait(1500);
+        this.getNotesList().find(this.noteCard).each(($el, index, $list) => {
+            const noteTitle = $el.find(this.noteCardTitle).text();
+            if(noteTitle === title){
+                cy.log("Found title: " + noteTitle);
+            }
+        })
     }
 
 }
 
-export default Dashboard;
+export default DashboardPage;
