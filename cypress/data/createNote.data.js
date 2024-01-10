@@ -8,3 +8,10 @@ export const createNoteData = {
     title: faker.lorem.sentence({min: 2, max: 10}),
     description: faker.lorem.paragraphs({min: 1, max: 2}),
 }
+
+export const updateNoteData = {
+    category: categories[Math.floor(Math.random()*3)],
+    checkbox: faker.datatype.boolean(),
+    title: faker.lorem.sentence({min: 2, max: 10}),
+    description: faker.lorem.paragraphs({min: 1, max: 2}),
+}

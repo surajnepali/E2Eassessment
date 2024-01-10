@@ -25,7 +25,7 @@ describe("Create Note E2E Automation", () => {
     it("Can't create note without filling all fields", () => {
         dashboardPage.getAddNoteButton().should('have.text', "+ Add Note").click();
         dashboardPage.addNote(createNoteData.category, "", "{selectall}{del}", "{selectall}{del}");
-        dashboardPage.getCreateButton().should('have.text', "Create").click();
+        dashboardPage.getSubmitButton().should('have.text', "Create").click();
         dashboardPage.getValidationMessage().eq(1).should('have.text', `Title ${errorMessage.isRequired}`);
         dashboardPage.getValidationMessage().eq(2).should('have.text', `Description ${errorMessage.isRequired}`);
     });
@@ -33,14 +33,14 @@ describe("Create Note E2E Automation", () => {
     it("Can't create note without filling the title", () => {
         dashboardPage.getAddNoteButton().should('have.text', "+ Add Note").click();
         dashboardPage.addNote(createNoteData.category, createNoteData.checkbox, "{selectall}{del}", createNoteData.description);
-        dashboardPage.getCreateButton().should('have.text', "Create").click();
+        dashboardPage.getSubmitButton().should('have.text', "Create").click();
         dashboardPage.getValidationMessage().should('have.text', `Title ${errorMessage.isRequired}`);
     });
 
     it("Can't create note without filling the description", () => {
         dashboardPage.getAddNoteButton().should('have.text', "+ Add Note").click();
         dashboardPage.addNote(createNoteData.category, createNoteData.checkbox, createNoteData.title, "{selectall}{del}");
-        dashboardPage.getCreateButton().should('have.text', "Create").click();
+        dashboardPage.getSubmitButton().should('have.text', "Create").click();
         dashboardPage.getValidationMessage().should('have.text', `Description ${errorMessage.isRequired}`);
     });
 
@@ -65,7 +65,7 @@ describe("Create Note E2E Automation", () => {
     it("Note is created successfully", () => {
         dashboardPage.getAddNoteButton().should('have.text', "+ Add Note").click();
         dashboardPage.addNote(createNoteData.category, createNoteData.checkbox, createNoteData.title, createNoteData.description);
-        dashboardPage.getCreateButton().should('have.text', "Create").click();
+        dashboardPage.getSubmitButton().should('have.text', "Create").click();
         dashboardPage.verifyFirstNote(createNoteData.title, createNoteData.checkbox);
     });
 

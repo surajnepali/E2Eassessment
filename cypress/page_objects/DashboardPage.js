@@ -10,12 +10,13 @@ class DashboardPage{
         this.checkboxInput = "input[type='checkbox']",
         this.titleInput = "input#title",
         this.descriptionInput = "textarea#description",
-        this.createButton = "button[data-testid='note-submit']",
+        this.submitButton = "button[data-testid='note-submit']",
         this.cancelButton = "button[data-testid='note-cancel']",
         this.validationMessage = "div.invalid-feedback",
         this.notesList = "div[data-testid='notes-list']",
         this.noteCard = "div[data-testid='note-card']",
-        this.noteCardTitle = "div[data-testid='note-card-title']"
+        this.noteCardTitle = "div[data-testid='note-card-title']",
+        this.noteEditButton = "button[data-testid='note-edit']"
     }
 
     getAddNoteButton(){
@@ -46,8 +47,8 @@ class DashboardPage{
         return cy.get(this.descriptionInput).should('be.visible');
     }
 
-    getCreateButton(){
-        return cy.get(this.createButton).should('be.visible');
+    getSubmitButton(){
+        return cy.get(this.submitButton).should('be.visible');
     }
 
     getCancelButton(){
@@ -66,6 +67,10 @@ class DashboardPage{
         return cy.get(this.noteCard).should('be.visible');
     }
 
+    getNoteEditButton(){
+        return cy.get(this.noteEditButton).should('be.visible');
+    }
+
     addNote(category, checkbox, title, description){
         this.getAddNoteContainer().should('be.visible').within(() => {
             this.getNoteCategoryDropdown().select(category);
@@ -78,14 +83,40 @@ class DashboardPage{
         });
     }
 
-    verifyFirstNote(title, checkbox){
+    verifyFirstNote(title){
         cy.wait(1500);
         this.getNotesList().find(this.noteCard).each(($el, index, $list) => {
             const noteTitle = $el.find(this.noteCardTitle).text();
             if(noteTitle === title){
-                cy.log("Found title: " + noteTitle);
+                cy.log("Note found: " + title);
             }
-        })
+        });
+    }
+
+    findAndClickEditButton(title) {
+        this.getNotesList().find(this.noteCard).each(($el, index, $list) => {
+            const noteTitle = $el.find(this.noteCardTitle).text();
+            if (noteTitle === title) {
+                cy.wrap($el).within(() => {
+                    this.getNoteEditButton().click();
+                })
+            }
+        });
+    }
+    
+
+    editNote(category, checkbox, title, description){
+        this.getAddNoteContainer().should('be.visible').within(() => {
+            this.getNoteCategoryDropdown().select(category);
+            cy.log("Value of checkbox: " + checkbox);
+            if(checkbox){
+                this.getCheckboxInput().check();
+            }
+            this.getTitleInput().clear();
+            this.getTitleInput().type(title);
+            this.getDescriptionInput().clear();
+            this.getDescriptionInput().type(description);
+        });
     }
 
 }
