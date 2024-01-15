@@ -19,6 +19,7 @@ describe("Update Note E2E Automation", () => {
         landingPage.getPageTitle("Welcome to Notes App");
         landingPage.getLoginButton().should('have.text', "Login").click();
         loginPage.login(Cypress.env('email'), Cypress.env('password'));
+        cy.wait(2000);
     });
 
     it("Note is created successfully", () => {

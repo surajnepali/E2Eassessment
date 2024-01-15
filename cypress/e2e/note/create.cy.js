@@ -20,6 +20,7 @@ describe("Create Note E2E Automation", () => {
         landingPage.getPageTitle("Welcome to Notes App");
         landingPage.getLoginButton().should('have.text', "Login").click();
         loginPage.login(Cypress.env('email'), Cypress.env('password'));
+        cy.wait(2000);
     });
 
     it("Can't create note without filling all fields", () => {
